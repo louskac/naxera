@@ -1,143 +1,179 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
 
 export default function SplittedScreen() {
     const router = useRouter();
 
     return (
-        <div className="min-h-screen font-body flex flex-col justify-between relative overflow-hidden bg-background text-foreground selection:bg-neon selection:text-white">
-            {/* Background Elements */}
-            <div className="noise-bg"></div>
-            <div className="fixed inset-0 pointer-events-none z-[-2] bg-[radial-gradient(circle_at_50%_50%,rgba(20,20,20,0),rgba(0,0,0,0.8))]"></div>
-            <div className="fixed inset-0 pointer-events-none z-[-2] opacity-40 bg-[repeating-linear-gradient(45deg,#111_0,#111_1px,transparent_1px,transparent_10px)]"></div>
+        /* Entire app fits on 1 screen */
+        <div className="h-screen w-full font-display flex flex-col relative overflow-hidden bg-black text-white selection:bg-primary selection:text-white">
 
-            {/* Header */}
-            <header className="w-full p-6 flex justify-between items-center z-20 border-b border-white/10 backdrop-blur-sm">
-                <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-neon shadow-[0_0_10px_rgba(255,0,127,0.5),0_0_20px_rgba(255,0,127,0.3)] transform skew-x-[-10deg]"></div>
-                    <span className="text-2xl font-display font-bold uppercase tracking-widest text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
-                        Naxera
+            {/* Background Texture Layers */}
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-40 bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')]"></div>
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-10 bg-[repeating-linear-gradient(0deg,rgba(255,255,255,0.05)_0px,rgba(255,255,255,0.05)_1px,transparent_1px,transparent_4px)]"></div>
+
+            {/* Header: High Contrast Brutalism */}
+            <header className="w-full p-5 flex justify-between items-center z-30 shrink-0 border-b-2 border-white/5">
+                <div className="flex items-center gap-2 group cursor-pointer">
+                    <div className="w-8 h-8 bg-primary shadow-[4px_4px_0px_#00f2ff] transform -skew-x-12"></div>
+                    <span className="text-2xl font-black italic tracking-tighter uppercase ml-2">
+                        NAX<span className="text-primary">ERA</span>
                     </span>
                 </div>
-                <div className="flex gap-4">
-                    <button className="w-10 h-10 border border-white/20 bg-white/5 flex items-center justify-center hover:bg-neon/20 hover:border-neon transition-all duration-300">
-                        <span className="material-symbols-outlined text-white text-sm">settings</span>
+                <div className="flex items-center gap-4">
+                    <div className="hidden sm:block font-mono text-[9px] text-primary tracking-widest animate-pulse">
+                        &gt; CONNECTION_STABLE_
+                    </div>
+                    <button className="w-10 h-10 border-2 border-white/20 bg-zinc-900 flex items-center justify-center hover:bg-primary transition-all active:scale-90">
+                        <span className="material-symbols-outlined text-lg">settings</span>
                     </button>
                 </div>
             </header>
 
             {/* Main Content */}
-            <main className="flex-grow flex flex-col items-center justify-center px-6 py-4 w-full max-w-md mx-auto relative z-10">
-                <div className="text-center mb-12 relative w-full">
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-8xl text-white/5 select-none -z-10 font-display font-black tracking-widest whitespace-nowrap">
-                        DECIDE
+            <main className="flex-1 flex flex-col items-center justify-around px-4 py-4 w-full max-w-lg mx-auto relative z-10">
+
+                {/* Hero Title: Restoring your Original Glitch Effect */}
+                <div className="text-center relative shrink-0">
+                    <div className="mb-2 inline-block bg-primary px-3 py-1 text-[9px] font-bold uppercase tracking-[0.3em] text-white">
+                        THE PATH IS YOURS
                     </div>
-                    <h1 className="text-5xl font-display font-black uppercase text-white leading-none tracking-tight mb-4 drop-shadow-[0_2px_0px_#FF007F]">
-                        Choose<br />Your Path
+                    <h1 className="text-5xl md:text-7xl font-black leading-[0.85] uppercase italic tracking-tighter">
+                        <span className="glitch-text block" data-text="CHOOSE">CHOOSE</span>
+                        <span className="text-primary block drop-shadow-[0_0_15px_rgba(255,0,127,0.4)]">YOUR PATH.</span>
                     </h1>
-                    <div className="inline-block mt-2">
-                        <p className="text-lg font-medium text-gray-300 max-w-xs mx-auto border-l-2 border-neon pl-4 py-1 bg-gradient-to-r from-neon/10 to-transparent font-mono">
-                            The game is live. <span className="text-neon font-bold">Are you in or out?</span>
-                        </p>
-                    </div>
                 </div>
 
-                <div className="w-full space-y-8">
-                    {/* Watcher Button */}
+                {/* Selection Cards */}
+                <div className="w-full space-y-14 mt-4 relative">
+
+                    {/* RICH ENERGY Watermark from original app */}
+                    <div className="absolute top-1/2 -left-20 font-marker text-accent text-6xl opacity-10 -rotate-12 select-none pointer-events-none whitespace-nowrap z-0">
+                        RICH ENERGY
+                    </div>
+
+                    {/* WATCHER BOX */}
                     <button
                         onClick={() => router.push("/lobby?role=watcher")}
-                        className="group w-full relative h-48 focus:outline-none overflow-hidden transform transition-all duration-300 hover:scale-[1.02]"
+                        className="group relative h-40 w-full focus:outline-none transition-all active:scale-95 z-10"
                     >
-                        <div className="absolute inset-0 bg-surface border border-white/20 skew-x-[-6deg] shadow-lg group-hover:border-white/50 transition-colors"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-6deg] translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                        <div className="relative w-full h-full p-6 flex flex-col items-start justify-between z-10">
-                            <div className="w-full flex justify-between items-start pl-4 pr-2">
-                                <span className="bg-gray-800/80 border border-gray-600 text-gray-300 px-3 py-1 text-xs font-mono uppercase tracking-widest">
-                                    Passive Mode
-                                </span>
-                                <span className="material-symbols-outlined text-4xl text-gray-500 group-hover:text-white transition-colors">
-                                    visibility
-                                </span>
-                            </div>
-                            <div className="pl-4 text-left">
-                                <h2 className="text-4xl font-display font-black uppercase tracking-wide text-gray-400 group-hover:text-white transition-colors animate-glitch" data-text="WATCHER">
-                                    Watcher
-                                </h2>
-                                <p className="text-gray-500 font-mono text-xs uppercase tracking-widest mt-2 group-hover:text-gray-300 transition-colors">
-                                    &gt; Observe the chaos safely_
-                                </p>
+                        {/* Character Image: Full Saturation, Pop-out */}
+                        <img
+                            src="/landing/watcher.png"
+                            alt="Watcher"
+                            className="absolute -top-24 right-0 h-60 w-auto z-20 pointer-events-none drop-shadow-[0_0_20px_rgba(0,242,255,0.3)] transition-transform group-hover:scale-110"
+                        />
+
+                        {/* Container: Saturated BG, Brutalist skew */}
+                        <div className="absolute inset-0 bg-zinc-900 border-2 border-white/20 skew-x-[-6deg] overflow-hidden group-hover:border-accent transition-colors">
+                            <div
+                                className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-100 transition-opacity duration-500 scale-110"
+                                style={{ backgroundImage: "url('/landing/watcher_background.png')" }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent" />
+                        </div>
+
+                        <div className="relative h-full p-6 flex flex-col justify-end items-start z-10">
+                            <div className="text-left">
+                                <span className="text-[9px] font-bold text-accent tracking-widest uppercase mb-1 block">PASSIVE_OBSERVER</span>
+                                <h2 className="text-4xl font-black uppercase italic text-white leading-none">WATCHER</h2>
+                                <p className="text-white/60 text-[8px] mt-2 font-mono tracking-widest">&gt; ACCESS_STREAM_ONLY.EXE</p>
                             </div>
                         </div>
                     </button>
 
-                    {/* Divider */}
-                    <div className="flex items-center justify-center w-full my-4 opacity-70">
-                        <div className="h-[1px] bg-gradient-to-r from-transparent via-neon to-transparent flex-grow"></div>
-                        <span className="px-4 font-display font-bold text-xl text-neon uppercase italic tracking-widest drop-shadow-[0_0_5px_#FF00FF]">
-                            OR
-                        </span>
-                        <div className="h-[1px] bg-gradient-to-r from-transparent via-neon to-transparent flex-grow"></div>
-                    </div>
-
-                    {/* Player Button */}
+                    {/* PLAYER BOX */}
                     <button
                         onClick={() => router.push("/lobby?role=player")}
-                        className="group w-full relative h-48 focus:outline-none overflow-hidden transform transition-all duration-300 hover:scale-[1.02]"
+                        className="group relative h-40 w-full focus:outline-none transition-all active:scale-95 z-10"
                     >
-                        <div className="absolute inset-0 bg-surface border border-neon skew-x-[-6deg] shadow-[0_0_15px_rgba(255,0,127,0.2)] group-hover:shadow-neon transition-all duration-300"></div>
-                        <div className="relative w-full h-full p-6 flex flex-col items-start justify-between z-10">
-                            <div className="w-full flex justify-between items-start pl-4 pr-2">
-                                <span className="bg-neon/20 border border-neon text-neon px-3 py-1 text-xs font-mono uppercase tracking-widest animate-pulse shadow-[0_0_10px_rgba(255,0,127,0.5)]">
-                                    Live Action
-                                </span>
-                                <span className="material-symbols-outlined text-4xl text-neon drop-shadow-[0_0_5px_rgba(255,0,127,0.8)]">
-                                    sports_esports
-                                </span>
-                            </div>
-                            <div className="pl-4 text-left">
-                                <h2 className="text-4xl font-display font-black uppercase tracking-wide text-white drop-shadow-[0_0_2px_#FF007F] animate-glitch" data-text="PLAYER">
-                                    Player
-                                </h2>
-                                <p className="text-neon font-mono text-xs uppercase tracking-widest mt-2 group-hover:text-white transition-colors">
-                                    &gt; Join the game. Win big_
-                                </p>
+                        {/* Character Image: Full Saturation, Pop-out */}
+                        <img
+                            src="/landing/player.png"
+                            alt="Player"
+                            className="absolute -top-24 right-0 h-60 w-auto z-20 pointer-events-none drop-shadow-[0_0_25px_rgba(255,0,127,0.4)] transition-transform group-hover:scale-110"
+                        />
+
+                        {/* Player Frame: Vibrant Magenta */}
+                        <div className="absolute -inset-0.5 bg-primary blur-sm opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                        <div className="absolute inset-0 bg-zinc-900 border-2 border-primary skew-x-[-6deg] overflow-hidden">
+                            <div
+                                className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-100 transition-opacity duration-500 scale-110"
+                                style={{ backgroundImage: "url('/landing/player_background.png')" }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent" />
+                        </div>
+
+                        {/* Corner Accents from Neobrutalism */}
+                        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-white z-20"></div>
+                        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-white z-20"></div>
+
+                        <div className="relative h-full p-6 flex flex-col justify-end items-start z-10">
+                            <div className="text-left">
+                                <span className="text-[9px] font-bold text-primary tracking-widest uppercase mb-1 block">LIVE_ACTION</span>
+                                <h2 className="text-4xl font-black uppercase italic text-white leading-none drop-shadow-[2px_2px_0px_#FF007F]">PLAYER</h2>
+                                <p className="text-white text-[8px] mt-2 font-mono tracking-widest">&gt; INITIATE_SACRIFICE.SH</p>
                             </div>
                         </div>
-                        <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-neon skew-x-[-6deg] translate-x-[-10px] translate-y-[10px]"></div>
-                        <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-neon skew-x-[-6deg] translate-x-[10px] translate-y-[-10px]"></div>
                     </button>
                 </div>
             </main>
 
-            {/* Footer */}
-            <footer className="w-full p-6 pb-8 z-10">
-                <div className="border border-white/10 bg-black/40 backdrop-blur-md p-4 flex justify-between items-center text-xs font-mono relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-1 h-full bg-neon"></div>
-                    <div className="flex flex-col pl-2">
-                        <span className="text-gray-500 uppercase font-bold tracking-wider text-[10px]">Current Players</span>
-                        <span className="text-xl font-display font-bold text-white tracking-widest">14,203</span>
+            {/* Footer Stats: Neobrutalist Container */}
+            <footer className="w-full p-4 z-10 shrink-0">
+                <div className="flex border-2 border-white/10 bg-zinc-950 p-4 divide-x-2 divide-white/10 relative overflow-hidden">
+                    {/* Tiny Magenta Accent Bar */}
+                    <div className="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+
+                    <div className="flex-1 px-4">
+                        <span className="text-white/40 text-[7px] uppercase font-bold tracking-[0.2em] block">POPULATION</span>
+                        <span className="text-xl font-black italic tracking-tighter">14,203</span>
                     </div>
-                    <div className="h-8 w-[1px] bg-white/20"></div>
-                    <div className="flex flex-col text-right">
-                        <span className="text-gray-500 uppercase font-bold tracking-wider text-[10px]">Prize Pool</span>
-                        <span className="text-xl font-display font-bold text-neon drop-shadow-[0_0_5px_#FF007F]">$500,000</span>
+                    <div className="flex-1 px-4 text-right">
+                        <span className="text-white/40 text-[7px] uppercase font-bold tracking-[0.2em] block">PRIZE_POOL</span>
+                        <span className="text-xl font-black italic tracking-tighter text-primary">$500,000</span>
                     </div>
-                </div>
-                <div className="mt-6 flex justify-center gap-4 text-gray-500 font-bold text-[10px] uppercase tracking-[0.2em] opacity-60">
-                    <span className="hover:text-neon cursor-pointer transition-colors">Terms</span>
-                    <span>/</span>
-                    <span className="hover:text-neon cursor-pointer transition-colors">Privacy</span>
-                    <span>/</span>
-                    <span>v1.0.3</span>
                 </div>
             </footer>
 
-            {/* Edge Decorations */}
-            <div className="fixed top-4 left-4 w-12 h-12 border-t border-l border-white/20 pointer-events-none z-50"></div>
-            <div className="fixed top-4 right-4 w-12 h-12 border-t border-r border-white/20 pointer-events-none z-50"></div>
-            <div className="fixed bottom-4 left-4 w-12 h-12 border-b border-l border-white/20 pointer-events-none z-50"></div>
-            <div className="fixed bottom-4 right-4 w-12 h-12 border-b border-r border-white/20 pointer-events-none z-50"></div>
+            {/* Add these styles to your global CSS or a <style> tag */}
+            <style jsx>{`
+                .glitch-text {
+                    position: relative;
+                    color: white;
+                }
+                .glitch-text::before, .glitch-text::after {
+                    content: attr(data-text);
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                }
+                .glitch-text::before {
+                    left: 2px;
+                    text-shadow: -2px 0 #00f2ff;
+                    clip: rect(44px, 450px, 56px, 0);
+                    animation: glitch-anim 5s infinite linear alternate-reverse;
+                }
+                .glitch-text::after {
+                    left: -2px;
+                    text-shadow: -2px 0 #ff007f;
+                    clip: rect(44px, 450px, 56px, 0);
+                    animation: glitch-anim2 5s infinite linear alternate-reverse;
+                }
+                @keyframes glitch-anim {
+                    0% { clip: rect(10px, 9999px, 20px, 0); }
+                    20% { clip: rect(30px, 9999px, 40px, 0); }
+                    40% { clip: rect(50px, 9999px, 60px, 0); }
+                    100% { clip: rect(80px, 9999px, 90px, 0); }
+                }
+                @keyframes glitch-anim2 {
+                    0% { clip: rect(80px, 9999px, 90px, 0); }
+                    20% { clip: rect(50px, 9999px, 60px, 0); }
+                    100% { clip: rect(10px, 9999px, 20px, 0); }
+                }
+            `}</style>
         </div>
     );
 }
