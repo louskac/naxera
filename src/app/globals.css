@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+:root {
+  /* Neobrutalist Palette */
+  --color-neon: #FF00FF;      /* Hot Pink */
+  --color-neon-cyan: #00FFFF; /* Cyan */
+  --color-background: #050505; /* Deep Black */
+  --color-surface: #111111;   /* Panel Black */
+  --color-foreground: #ededed; /* Off-white text */
+  --color-primary: var(--color-neon);
+  --color-secondary: var(--color-neon-cyan);
+}
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-neon: var(--color-neon);
+  --color-neon-cyan: var(--color-neon-cyan);
+  --color-surface: var(--color-surface);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  
+  --font-display: var(--font-space-grotesk), sans-serif;
+  --font-mono: var(--font-space-mono), monospace;
+  --font-chakra: var(--font-chakra-petch), sans-serif;
+  --font-rajdhani: var(--font-rajdhani), sans-serif;
+  --font-archivo: var(--font-archivo-black), sans-serif;
+  
+  --animate-glitch: glitch 1s linear infinite;
+  --animate-scanline: scanline 8s linear infinite;
+  --animate-marquee: marquee 20s linear infinite;
+  --animate-pulse-fast: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-display);
+  overflow-x: hidden;
+}
+
+/* Utilities */
+.scanlines {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.2)
+  );
+  background-size: 100% 4px;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.3;
+}
+
+.noise-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 40;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.glitch-text {
+  position: relative;
+  text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff;
+}
+
+.text-stroke-neon {
+  -webkit-text-stroke: 1px #FF00FF;
+  color: transparent;
+}
+
+/* Animations */
+@keyframes glitch {
+  2%, 64% { transform: translate(2px,0) skew(0deg); }
+  4%, 60% { transform: translate(-2px,0) skew(0deg); }
+  62% { transform: translate(0,0) skew(5deg); }
+}
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.animate-glitch {
+  animation: glitch 1s linear infinite;
+}
