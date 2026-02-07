@@ -8,6 +8,7 @@ export interface User {
     impactScore?: number; // Total amount funded for watchers
     xp?: number; // Experience points for players
     credits: number;
+    walletAddress?: string;
 }
 
 export interface Challenge {

@@ -27,16 +27,35 @@ function LobbyContent() {
         return () => clearInterval(timer);
     }, []);
 
-    const handleCreateChallenge = () => {
+    const handleCreateChallenge = async () => {
         if (!newChallenge.title || !newChallenge.bounty) return;
-        createChallenge({
-            title: newChallenge.title,
-            description: newChallenge.description,
-            bounty: Number(newChallenge.bounty),
-            location: { lat: 34.0522, lng: -118.2437, name: "Downtown Sector" }
-        });
-        setIsCreating(false);
-        setNewChallenge({ title: "", bounty: "", description: "" });
+
+        try {
+            console.log("Creating challenge on-chain...");
+            // Call API to escrow funds
+            await fetch("/api/challenge/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    watcherId: user?.id,
+                    bountyAmount: newChallenge.bounty,
+                    challengeDetails: { title: newChallenge.title }
+                })
+            });
+
+            // Update local state
+            createChallenge({
+                title: newChallenge.title,
+                description: newChallenge.description,
+                bounty: Number(newChallenge.bounty),
+                location: { lat: 34.0522, lng: -118.2437, name: "Downtown Sector" }
+            });
+
+            setIsCreating(false);
+            setNewChallenge({ title: "", bounty: "", description: "" });
+        } catch (error) {
+            console.error("Failed to create challenge:", error);
+        }
     };
 
     const isWatcher = role === "watcher";

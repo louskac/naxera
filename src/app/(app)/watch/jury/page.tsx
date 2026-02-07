@@ -111,7 +111,25 @@ export default function JuryPage() {
                         </span>
                     </button>
                     <button
-                        onClick={() => voteOnverification(currentCase.challengeId, 'approve')}
+                        onClick={async () => {
+                            if (currentCase) {
+                                console.log("Processing payout on-chain...");
+                                try {
+                                    await fetch("/api/challenge/verify", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({
+                                            challengeId: currentCase.challengeId,
+                                            playerId: currentCase.submittedBy,
+                                            proofHash: currentCase.evidence.id // Using evidence ID as simple hash proxy
+                                        })
+                                    });
+                                } catch (e) {
+                                    console.error("Payout failed:", e);
+                                }
+                            }
+                            voteOnverification(currentCase.challengeId, 'approve');
+                        }}
                         className="flex-1 bg-primary hover:bg-[#ff33ff] text-black border-2 border-primary shadow-[0_0_10px_#FF00FF,0_0_20px_#FF00FF] active:scale-95 transition-all h-16 flex items-center justify-center group relative overflow-hidden"
                     >
                         <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-300 transform skew-x-12"></div>

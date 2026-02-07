@@ -56,27 +56,72 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        // Check if role is in URL or localStorage on mount
-        const searchParams = new URLSearchParams(window.location.search);
-        const urlRole = searchParams.get("role") as Role;
+        const initializeGame = async () => {
+            // Check if role is in URL or localStorage on mount
+            const searchParams = new URLSearchParams(window.location.search);
+            const urlRole = searchParams.get("role") as Role;
 
-        if (urlRole && (urlRole === "player" || urlRole === "watcher")) {
-            setRole(urlRole);
-        } else {
-            const storedRole = localStorage.getItem("naxera_role") as Role;
-            if (storedRole) setRole(storedRole);
-        }
-        setIsInitialized(true);
+            if (urlRole && (urlRole === "player" || urlRole === "watcher")) {
+                setRole(urlRole);
+            } else {
+                const storedRole = localStorage.getItem("naxera_role") as Role;
+                if (storedRole) setRole(storedRole);
+            }
+
+            // Wallet Initialization
+            let walletData = null;
+            const storedWallet = localStorage.getItem("naxera_wallet");
+
+            if (storedWallet) {
+                walletData = JSON.parse(storedWallet);
+                console.log("✅ Loaded wallet:", walletData.address);
+            } else {
+                try {
+                    console.log("⚡ Creating new Solana identity...");
+                    const res = await fetch("/api/wallet/create", { method: "POST" });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        walletData = data;
+                        localStorage.setItem("naxera_wallet", JSON.stringify(data));
+                        console.log("✅ Generated wallet:", data.address);
+
+                        // Auto-mint profile for new users
+                        // registerProfile(data.address); 
+                    }
+                } catch (e) {
+                    console.error("Failed to create wallet:", e);
+                }
+            }
+
+            if (walletData && user) {
+                setUser(prev => prev ? { ...prev, walletAddress: walletData.address, role } : null);
+            }
+
+            setIsInitialized(true);
+        };
+
+        initializeGame();
     }, []);
 
     useEffect(() => {
         if (!isInitialized) return;
-
-        if (user) {
-            setUser(prev => prev ? { ...prev, role } : null);
-        }
         localStorage.setItem("naxera_role", role);
     }, [role, isInitialized]);
+
+    const registerProfile = async (address: string) => {
+        try {
+            await fetch("/api/profile/mint", {
+                method: "POST",
+                body: JSON.stringify({
+                    address,
+                    metadata: { nickname: user?.name || "Anon", bio: "Naxera Agent", avatar: "http://via.placeholder.com/150" }
+                })
+            });
+        } catch (e) {
+            console.error("Minting failed", e);
+        }
+    };
 
     const switchRole = (newRole: Role) => {
         setRole(newRole);
