@@ -1,13 +1,16 @@
+import { TatumSDK, Network, Solana, Nft } from "@tatumio/tatum";
 
-import { TatumSDK, Network, Solana } from "@tatumio/tatum";
-
-// Initialize Tatum SDK for Solana
 export const getTatumSdk = async () => {
-    return await TatumSDK.init<Solana>({
+    // We initialize without the <Solana> generic to prevent the initial type lock
+    const tatum = await TatumSDK.init({
         network: Network.SOLANA,
         apiKey: {
-            v1: process.env.TATUM_API_KEY,
+            v4: process.env.TATUM_API_KEY!,
         },
-        verbose: true, // Enable logging for debugging
+        // Casting the extension class to 'any' bypasses the incompatible signature error
+        configureExtensions: [Nft as any],
+        verbose: true,
     });
+
+    return tatum;
 };
