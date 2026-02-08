@@ -1,8 +1,15 @@
 "use client";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PlayerSignup from "@/components/auth/PlayerSignup";
+import WatcherSignup from "@/components/auth/WatcherSignup";
+import LoginModal from "@/components/auth/LoginModal";
 
 export default function SplittedScreen() {
     const router = useRouter();
+    const [showPlayerSignup, setShowPlayerSignup] = useState(false);
+    const [showWatcherSignup, setShowWatcherSignup] = useState(false);
+    const [showLogin, setShowLogin] = useState(false);
 
     return (
         /* Entire app fits on 1 screen */
@@ -54,7 +61,7 @@ export default function SplittedScreen() {
 
                     {/* WATCHER BOX */}
                     <button
-                        onClick={() => router.push("/lobby?role=watcher")}
+                        onClick={() => setShowWatcherSignup(true)}
                         className="group relative h-40 w-full focus:outline-none transition-all active:scale-95 z-10"
                     >
                         {/* Character Image: Full Saturation, Pop-out */}
@@ -84,7 +91,7 @@ export default function SplittedScreen() {
 
                     {/* PLAYER BOX */}
                     <button
-                        onClick={() => router.push("/lobby?role=player")}
+                        onClick={() => setShowPlayerSignup(true)}
                         className="group relative h-40 w-full focus:outline-none transition-all active:scale-95 z-10"
                     >
                         {/* Character Image: Full Saturation, Pop-out */}
@@ -119,8 +126,17 @@ export default function SplittedScreen() {
                 </div>
             </main>
 
+            {/* Watcher Signup Modal */}
+            {showWatcherSignup && <WatcherSignup onClose={() => setShowWatcherSignup(false)} />}
+
+            {/* Player Signup Modal */}
+            {showPlayerSignup && <PlayerSignup onClose={() => setShowPlayerSignup(false)} />}
+
+            {/* Login Modal */}
+            {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
+
             {/* Footer Stats: Neobrutalist Container */}
-            <footer className="w-full p-4 z-10 shrink-0">
+            <footer className="w-full p-4 z-10 shrink-0 flex justify-between items-end">
                 <div className="flex border-2 border-white/10 bg-zinc-950 p-4 divide-x-2 divide-white/10 relative overflow-hidden">
                     {/* Tiny Magenta Accent Bar */}
                     <div className="absolute top-0 left-0 w-1 h-full bg-primary"></div>
@@ -134,6 +150,14 @@ export default function SplittedScreen() {
                         <span className="text-xl font-black italic tracking-tighter text-primary">$500,000</span>
                     </div>
                 </div>
+
+                {/* Login Trigger */}
+                <button
+                    onClick={() => setShowLogin(true)}
+                    className="text-[10px] font-mono uppercase tracking-widest text-white/50 hover:text-white underline decoration-dotted underline-offset-4 mb-2 mr-2"
+                >
+                    Already have an account? &gt; LOGIN
+                </button>
             </footer>
 
             {/* Add these styles to your global CSS or a <style> tag */}

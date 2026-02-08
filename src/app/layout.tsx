@@ -8,6 +8,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { GameProvider } from "@/context/GameContext";
+import { UserProvider } from "@/context/UserContext";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -60,9 +61,11 @@ export default function RootLayout({
       >
         <div className="scanlines"></div>
         <div className="noise-bg"></div>
-        <GameProvider>
-          {children}
-        </GameProvider>
+        <UserProvider>
+          <GameProvider>
+            {children}
+          </GameProvider>
+        </UserProvider>
       </body>
     </html>
   );

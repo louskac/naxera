@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { User, Role, Challenge } from "@/lib/types";
+import { useUser } from "@/context/UserContext";
 
 interface GameContextType {
     user: User | null;
@@ -47,7 +48,7 @@ const INITIAL_CHALLENGES: Challenge[] = [
 ];
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useState<User | null>(DUMMY_USER);
+    const { user: authUser } = useUser();
     const [challenges, setChallenges] = useState<Challenge[]>(INITIAL_CHALLENGES);
 
     // Persist role via localStorage for dev convenience, default to player
@@ -68,41 +69,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                 if (storedRole) setRole(storedRole);
             }
 
-            // Wallet Initialization
-            let walletData = null;
-            const storedWallet = localStorage.getItem("naxera_wallet");
-
-            if (storedWallet) {
-                walletData = JSON.parse(storedWallet);
-                console.log("✅ Loaded wallet:", walletData.address);
-            } else {
-                try {
-                    console.log("⚡ Creating new Solana identity...");
-                    const res = await fetch("/api/wallet/create", { method: "POST" });
-                    const data = await res.json();
-
-                    if (data.success) {
-                        walletData = data;
-                        localStorage.setItem("naxera_wallet", JSON.stringify(data));
-                        console.log("✅ Generated wallet:", data.address);
-
-                        // Auto-mint profile for new users
-                        // registerProfile(data.address); 
-                    }
-                } catch (e) {
-                    console.error("Failed to create wallet:", e);
-                }
-            }
-
-            if (walletData && user) {
-                setUser(prev => prev ? { ...prev, walletAddress: walletData.address, role } : null);
-            }
+            // Wallet Initialization logic moved to UserContext
+            // We now rely on authUser from UserContext
 
             setIsInitialized(true);
         };
 
         initializeGame();
     }, []);
+
+    // Sync role with authenticated user if available
+    useEffect(() => {
+        if (authUser) {
+            setRole(authUser.role);
+        }
+    }, [authUser]);
+
+    // Use authUser if logged in, otherwise null (or DUMMY if strictly needed for dev before auth)
+    // For now we return authUser. If null, the UI should handle "Not Logged In" state.
+    const user = authUser;
 
     useEffect(() => {
         if (!isInitialized) return;

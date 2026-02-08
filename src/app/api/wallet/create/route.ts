@@ -6,7 +6,7 @@ import bs58 from "bs58";
 
 export async function POST(req: Request) {
     try {
-        const tatum = await getTatumSdk();
+        // const tatum = await getTatumSdk(); // Unused and causing init errors.
 
         // Generate a new Solana wallet using @solana/web3.js
         const keypair = Keypair.generate();

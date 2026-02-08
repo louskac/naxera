@@ -7,8 +7,6 @@ export const getTatumSdk = async () => {
         apiKey: {
             v4: process.env.TATUM_API_KEY!,
         },
-        // Casting the extension class to 'any' bypasses the incompatible signature error
-        configureExtensions: [Nft as any],
         verbose: true,
     });
 
